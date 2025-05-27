@@ -1,10 +1,12 @@
 import React from 'react';
-import { RootState } from '../store/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../store/store';
+import { resetSurvey } from '../store/surveySlice';
 import { ROUTES } from '../utils/routes.constants';
 
 const ResultsScreen: React.FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const results = useSelector((state: RootState) => state.survey.responses);
 
@@ -19,7 +21,7 @@ const ResultsScreen: React.FC = () => {
         </div>
 
         <div className="divide-y divide-gray-300 text-left">
-          {results?.length ? results.map((item, index) => (
+          {Array.isArray(results) && results.length > 0 ? results.map((item, index) => (
             <div
               key={index}
               className="py-3 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 text-sm sm:text-base"
@@ -39,8 +41,10 @@ const ResultsScreen: React.FC = () => {
         </div>
         <button
             className="bg-green-600 text-white px-6 py-2 rounded font-semibold hover:bg-green-700 transition disabled:opacity-50"
-            onClick={() => navigate(ROUTES.LANDING)}
-          >
+            onClick={() => {
+              navigate(ROUTES.LANDING);
+              dispatch(resetSurvey());
+            }} >
             Go to Home
           </button>
       </div>

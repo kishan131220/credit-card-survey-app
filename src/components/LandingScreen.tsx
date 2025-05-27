@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { resetSurvey } from '../store/surveySlice';
 import { ROUTES } from '../utils/routes.constants';
 
 const LandingScreen: React.FC = () => {
@@ -8,6 +10,11 @@ const LandingScreen: React.FC = () => {
   const handleStartClick = () => {
     navigate(ROUTES.SURVEY_QUESTION_1);
   };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(resetSurvey());
+  }
+  , []);
 
   return (
     <div className="bg-blue-800 text-white min-h-screen flex flex-col items-center justify-center px-5 text-center">

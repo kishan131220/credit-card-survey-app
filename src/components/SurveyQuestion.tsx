@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { EMOJIS, TOTAL_TIME } from '../utils/emoji.constants';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { addResponse } from '../store/surveySlice';
+import { EMOJIS, TOTAL_TIME } from '../utils/emoji.constants';
 import { ROUTES } from '../utils/routes.constants';
+import EmojiSelector from './EmojiSelector';
 
 const SurveyQuestion: React.FC = () => {
   const navigate = useNavigate();
@@ -58,35 +59,12 @@ const SurveyQuestion: React.FC = () => {
         </p>
 
         <div className="flex justify-center flex-wrap gap-5 mb-6">
-          {EMOJIS.map((emoji, index) => (
-            <button
-              key={index}
-              onMouseEnter={() => setHoverIndex(index)}
-              onMouseLeave={() => setHoverIndex(null)}
-              onClick={() => setSelectedIndex(index)}
-              className="flex flex-col items-center cursor-pointer transition-transform hover:scale-110"
-              title={emoji.label}
-            >
-              <img
-                src={
-                  selectedIndex === index || hoverIndex === index
-                    ? emoji.highlight
-                    : emoji.icon
-                }
-                alt={emoji.label}
-                className="w-10 h-10 sm:w-12 sm:h-12 transition-all duration-200"
-              />
-              <span
-                className={`text-xs mt-1 ${
-                  selectedIndex === index || hoverIndex === index
-                    ? 'text-yellow-500 font-medium'
-                    : 'text-gray-600'
-                }`}
-              >
-                {emoji.label}
-              </span>
-            </button>
-          ))}
+          <EmojiSelector
+            selectedIndex={selectedIndex}
+            hoverIndex={hoverIndex}
+            onSelect={setSelectedIndex}
+            onHover={setHoverIndex}
+          />
         </div>
 
         <hr className="mb-6 border-gray-300" />
